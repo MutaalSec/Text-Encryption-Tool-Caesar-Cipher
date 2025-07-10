@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text Encryption Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h2 {
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 0.3rem;
+      margin-right: 10px;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Text Encryption Tool</h2>
+
+    <label>Enter your text:</label>
+    <textarea id="inputText" rows="4"></textarea>
+
+    <label>Shift (Caesar Cipher):</label>
+    <input type="number" id="shift" value="3" />
+
+    <div class="actions">
+      <button onclick="encryptText()">Encrypt</button>
+      <button onclick="decryptText()">Decrypt</button>
+    </div>
+
+    <label>Result:</label>
+    <textarea id="outputText" rows="4" readonly></textarea>
+  </div>
+
+  <script>
+    function caesarCipher(str, shift) {
+      return str.split('').map(char => {
+        const code = char.charCodeAt(0);
+        if (code >= 65 && code <= 90) {
+          // Uppercase letters
+          return String.fromCharCode(((code - 65 + shift + 26) % 26) + 65);
+        } else if (code >= 97 && code <= 122) {
+          // Lowercase letters
+          return String.fromCharCode(((code - 97 + shift + 26) % 26) + 97);
+        } else {
+          // Non-alphabetic characters remain unchanged
+          return char;
+        }
+      }).join('');
+    }
+
+    function encryptText() {
+      const input = document.getElementById('inputText').value;
+      const shift = parseInt(document.getElementById('shift').value);
+      const encrypted = caesarCipher(input, shift);
+      document.getElementById('outputText').value = encrypted;
+    }
+
+    function decryptText() {
+      const input = document.getElementById('inputText').value;
+      const shift = parseInt(document.getElementById('shift').value);
+      const decrypted = caesarCipher(input, -shift);
+      document.getElementById('outputText').value = decrypted;
+    }
+  </script>
+</body>
+</html>
